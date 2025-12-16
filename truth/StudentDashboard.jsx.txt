@@ -1,0 +1,24 @@
+import { useEffect, useState } from "react";
+import API from "../api/api";
+
+export default function Dashboard() {
+  const [fees, setFees] = useState([]);
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    API.get("/fees/my").then(r => setFees(r.data));
+    API.get("/results/my").then(r => setResults(r.data));
+  }, []);
+
+  return (
+    <div>
+      <h2>Student Dashboard</h2>
+
+      <h3>School Fees</h3>
+      {fees.map(f => <p key={f.id}>{f.amount} - {f.status}</p>)}
+
+      <h3>Results</h3>
+      {results.map(r => <p key={r.id}>{r.subject}: {r.score}</p>)}
+    </div>
+  );
+}
